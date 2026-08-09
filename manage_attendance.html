@@ -1,0 +1,330 @@
+{% extends 'faculty_base.html' %}
+
+{% block content %}
+
+<style>
+  /* ============================================================
+     PREMIUM MANAGE ATTENDANCE STYLES
+     Enterprise-grade design, fully consistent with the ERP portal
+     ============================================================ */
+
+  /* ----- page heading (matches other content headings) ----- */
+  h2 {
+    color: #0f172a;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    position: relative;
+    display: inline-block;
+  }
+
+  h2::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: #2563eb;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+  }
+
+  h2:hover::after {
+    width: 100%;
+  }
+
+  /* ----- premium table styling (overriding Bootstrap) ----- */
+  .table {
+    background: #ffffff;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(15, 23, 42, 0.06);
+    border: 1px solid rgba(226, 232, 240, 0.6);
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 16px;
+    font-size: 0.95rem;
+  }
+
+  /* Remove Bootstrap's default bordered styles */
+  .table-bordered {
+    border: none;
+  }
+
+  .table-bordered th,
+  .table-bordered td {
+    border: none;
+  }
+
+  .table thead {
+    background: linear-gradient(145deg, #f1f5f9, #e2e8f0);
+    color: #0f172a;
+  }
+
+  .table thead th {
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    color: #475569;
+    padding: 18px 20px;
+    border-bottom: 2px solid #e2e8f0;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .table tbody td {
+    padding: 16px 20px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #0f172a;
+    vertical-align: middle;
+  }
+
+  .table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .table tbody tr:hover {
+    background: #f8fafc;
+  }
+
+  /* subtle zebra striping for better readability */
+  .table tbody tr:nth-of-type(even) {
+    background: #fafbfc;
+  }
+
+  .table tbody tr:nth-of-type(even):hover {
+    background: #f1f5f9;
+  }
+
+  /* ----- form controls inside table (input fields) ----- */
+  .form-control {
+    border-radius: 12px;
+    padding: 10px 14px;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    color: #0f172a;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    width: 100%;
+    min-width: 70px;
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12), 0 4px 12px rgba(37, 99, 235, 0.08);
+    background: #ffffff;
+  }
+
+  .form-control::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .form-control[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+  /* ----- premium save button (matches other .btn-success) ----- */
+  .btn {
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 8px 20px;
+    border-radius: 50px;
+    letter-spacing: 0.3px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    border: none;
+  }
+
+  .btn-success {
+    background: #10b981;
+    color: #fff;
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.25);
+  }
+
+  .btn-success:hover {
+    background: #059669;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 36px rgba(16, 185, 129, 0.40);
+    color: #fff;
+  }
+
+  .btn-success:active {
+    transform: scale(0.96);
+  }
+
+  /* ----- responsive adjustments ----- */
+  @media (max-width: 768px) {
+    h2 {
+      font-size: 1.6rem;
+    }
+
+    .table {
+      font-size: 0.85rem;
+      border-radius: 16px;
+    }
+
+    .table thead th,
+    .table tbody td {
+      padding: 12px 14px;
+    }
+
+    .form-control {
+      padding: 8px 10px;
+      font-size: 0.85rem;
+      min-width: 50px;
+    }
+
+    .btn {
+      padding: 6px 14px;
+      font-size: 0.8rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .table thead th {
+      font-size: 0.7rem;
+      padding: 8px 8px;
+      white-space: normal;
+    }
+
+    .table tbody td {
+      padding: 8px 8px;
+      font-size: 0.8rem;
+    }
+
+    .form-control {
+      padding: 6px 8px;
+      font-size: 0.8rem;
+      min-width: 40px;
+    }
+
+    /* make table horizontally scrollable */
+    .table {
+      display: block;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .table thead,
+    .table tbody,
+    .table tr {
+      display: table;
+      width: 100%;
+      table-layout: fixed;
+    }
+  }
+
+  /* ensure base container doesn't interfere */
+  .table * {
+    box-sizing: border-box;
+  }
+</style>
+
+<h2>Manage Attendance</h2>
+
+<table class="table table-bordered">
+
+<thead>
+
+<tr>
+
+<th>Roll No</th>
+<th>Python</th>
+<th>DBMS</th>
+<th>Java</th>
+<th>CN</th>
+<th>OS</th>
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for row in data %}
+
+<form method="POST">
+
+<tr>
+
+<td>
+
+{{ row.RollNo }}
+
+<input
+type="hidden"
+name="rollno"
+value="{{ row.RollNo }}">
+
+</td>
+
+<td>
+<input
+type="number"
+class="form-control"
+name="python"
+value="{{ row.Python }}">
+</td>
+
+<td>
+<input
+type="number"
+class="form-control"
+name="dbms"
+value="{{ row.DBMS }}">
+</td>
+
+<td>
+<input
+type="number"
+class="form-control"
+name="java"
+value="{{ row.Java }}">
+</td>
+
+<td>
+<input
+type="number"
+class="form-control"
+name="cn"
+value="{{ row.CN }}">
+</td>
+
+<td>
+<input
+type="number"
+class="form-control"
+name="os"
+value="{{ row.OS }}">
+</td>
+
+<td>
+
+<button
+class="btn btn-success">
+
+Save
+
+</button>
+
+</td>
+
+</tr>
+
+</form>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+{% endblock %}
