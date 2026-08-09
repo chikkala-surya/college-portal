@@ -1,0 +1,350 @@
+{% extends 'faculty_base.html' %}
+
+{% block content %}
+
+<style>
+  /* ============================================================
+     PREMIUM ADD STUDENT FORM STYLES
+     Enterprise-grade, fully consistent with the ERP portal
+     ============================================================ */
+
+  /* ----- container spacing ----- */
+  .container {
+    max-width: 900px;
+    padding: 0 16px;
+  }
+
+  /* ----- premium card styling ----- */
+  .card {
+    border: none;
+    border-radius: 24px;
+    box-shadow: 0 8px 32px rgba(15, 23, 42, 0.06);
+    border: 1px solid rgba(226, 232, 240, 0.6);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    overflow: hidden;
+  }
+
+  .card:hover {
+    box-shadow: 0 16px 48px rgba(15, 23, 42, 0.08);
+    transform: translateY(-2px);
+  }
+
+  /* ----- card header (premium gradient) ----- */
+  .card-header {
+    background: linear-gradient(145deg, #2563eb, #1e40af) !important;
+    padding: 24px 32px;
+    border-bottom: none;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-header::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 60%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .card-header h3 {
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: -0.3px;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+    color: #ffffff;
+  }
+
+  /* ----- card body ----- */
+  .card-body {
+    padding: 32px 36px;
+    background: #ffffff;
+  }
+
+  /* ----- form labels ----- */
+  .form-label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #0f172a;
+    margin-bottom: 6px;
+    letter-spacing: 0.2px;
+  }
+
+  /* ----- form inputs (premium) ----- */
+  .form-control {
+    border-radius: 16px;
+    padding: 14px 18px;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    color: #0f172a;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12), 0 4px 12px rgba(37, 99, 235, 0.08);
+    background: #ffffff;
+  }
+
+  .form-control::placeholder {
+    color: #94a3b8;
+    font-weight: 400;
+  }
+
+  /* ----- buttons (premium) ----- */
+  .btn {
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 12px 32px;
+    border-radius: 50px;
+    letter-spacing: 0.3px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    border: none;
+  }
+
+  .btn-success {
+    background: #10b981;
+    color: #fff;
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.30);
+  }
+
+  .btn-success:hover {
+    background: #059669;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 36px rgba(16, 185, 129, 0.40);
+    color: #fff;
+  }
+
+  .btn-secondary {
+    background: #e2e8f0;
+    color: #0f172a;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  }
+
+  .btn-secondary:hover {
+    background: #cbd5e1;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    color: #0f172a;
+  }
+
+  .btn:active {
+    transform: scale(0.96);
+  }
+
+  /* ----- spacing between buttons ----- */
+  .btn + .btn {
+    margin-left: 12px;
+  }
+
+  /* ----- responsive adjustments ----- */
+  @media (max-width: 768px) {
+    .card-header {
+      padding: 20px 24px;
+    }
+
+    .card-header h3 {
+      font-size: 1.3rem;
+    }
+
+    .card-body {
+      padding: 24px 20px;
+    }
+
+    .form-control {
+      padding: 12px 16px;
+      font-size: 0.9rem;
+    }
+
+    .btn {
+      padding: 10px 24px;
+      font-size: 0.9rem;
+      width: 100%;
+      margin-bottom: 8px;
+    }
+
+    .btn + .btn {
+      margin-left: 0;
+    }
+
+    .row .col-md-6 {
+      margin-bottom: 0;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .card {
+      border-radius: 18px;
+    }
+
+    .card-body {
+      padding: 18px 16px;
+    }
+
+    .form-label {
+      font-size: 0.85rem;
+    }
+  }
+
+  /* override Bootstrap's bg-primary to avoid conflict */
+  .bg-primary {
+    background: transparent !important;
+  }
+</style>
+
+<div class="container mt-4">
+
+  <div class="card shadow">
+
+    <div class="card-header bg-primary text-white">
+
+      <h3>Add New Student</h3>
+
+    </div>
+
+    <div class="card-body">
+
+      <form method="POST">
+
+        <div class="row">
+
+          <div class="col-md-6 mb-3">
+
+            <label class="form-label">
+              Roll Number
+            </label>
+
+            <input
+              type="text"
+              name="rollno"
+              class="form-control"
+              required>
+
+          </div>
+
+          <div class="col-md-6 mb-3">
+
+            <label class="form-label">
+              Student Name
+            </label>
+
+            <input
+              type="text"
+              name="name"
+              class="form-control"
+              required>
+
+          </div>
+
+        </div>
+
+        <div class="row">
+
+          <div class="col-md-6 mb-3">
+
+            <label class="form-label">
+              Branch
+            </label>
+
+            <input
+              type="text"
+              name="branch"
+              class="form-control"
+              required>
+
+          </div>
+
+          <div class="col-md-6 mb-3">
+
+            <label class="form-label">
+              Section
+            </label>
+
+            <input
+              type="text"
+              name="section"
+              class="form-control"
+              required>
+
+          </div>
+
+        </div>
+
+        <div class="row">
+
+          <div class="col-md-6 mb-3">
+
+            <label class="form-label">
+              Mobile Number
+            </label>
+
+            <input
+              type="text"
+              name="mobile"
+              class="form-control"
+              required>
+
+          </div>
+
+          <div class="col-md-6 mb-3">
+
+            <label class="form-label">
+              Email Address
+            </label>
+
+            <input
+              type="email"
+              name="email"
+              class="form-control"
+              required>
+
+          </div>
+
+        </div>
+
+        <div class="mb-3">
+
+          <label class="form-label">
+            Login Password
+          </label>
+
+          <input
+            type="text"
+            name="password"
+            class="form-control"
+            required>
+
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-success">
+
+          Add Student
+
+        </button>
+
+        <a href="/manage-students"
+          class="btn btn-secondary">
+
+          Back
+
+        </a>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</div>
+
+{% endblock %}

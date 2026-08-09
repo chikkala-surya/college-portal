@@ -1,0 +1,369 @@
+{% extends 'faculty_base.html' %}
+
+{% block content %}
+
+<style>
+  /* ============================================================
+     PREMIUM EVENT MANAGEMENT STYLES
+     Enterprise-grade, fully consistent with the ERP portal
+     ============================================================ */
+
+  /* ----- page title (consistent with other headings) ----- */
+  .page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 30px;
+    letter-spacing: -0.5px;
+    position: relative;
+    display: inline-block;
+  }
+
+  .page-title::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: #2563eb;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+  }
+
+  .page-title:hover::after {
+    width: 100%;
+  }
+
+  /* ----- event card container ----- */
+  .event-card {
+    background: #ffffff;
+    padding: 28px 32px;
+    border-radius: 24px;
+    box-shadow: 0 8px 32px rgba(15, 23, 42, 0.06);
+    border: 1px solid rgba(226, 232, 240, 0.6);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+
+  .event-card:hover {
+    box-shadow: 0 16px 48px rgba(15, 23, 42, 0.08);
+    transform: translateY(-2px);
+  }
+
+  /* ----- flex header (d-flex) ----- */
+  .d-flex {
+    display: flex !important;
+  }
+
+  .justify-content-between {
+    justify-content: space-between !important;
+  }
+
+  .align-items-center {
+    align-items: center !important;
+  }
+
+  .mb-3 {
+    margin-bottom: 16px !important;
+  }
+
+  .event-card h4 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+    letter-spacing: -0.3px;
+  }
+
+  /* ----- add button (premium) ----- */
+  .btn-add {
+    background: #10b981;
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.3px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.25);
+    cursor: pointer;
+  }
+
+  .btn-add:hover {
+    background: #059669;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 36px rgba(16, 185, 129, 0.40);
+    color: white;
+  }
+
+  .btn-add:active {
+    transform: scale(0.96);
+  }
+
+  /* ----- premium table styling (overriding Bootstrap) ----- */
+  .table {
+    background: #ffffff;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(15, 23, 42, 0.06);
+    border: 1px solid rgba(226, 232, 240, 0.6);
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 16px;
+    font-size: 0.95rem;
+  }
+
+  /* Remove Bootstrap's default bordered styles */
+  .table-bordered {
+    border: none;
+  }
+
+  .table-bordered th,
+  .table-bordered td {
+    border: none;
+  }
+
+  .table thead {
+    background: linear-gradient(145deg, #f1f5f9, #e2e8f0);
+    color: #0f172a;
+  }
+
+  .table thead th {
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    color: #475569;
+    padding: 18px 20px;
+    border-bottom: 2px solid #e2e8f0;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  /* Override the table-primary class from Bootstrap */
+  .table-primary {
+    background: linear-gradient(145deg, #f1f5f9, #e2e8f0) !important;
+    color: #0f172a;
+  }
+
+  .table-primary th {
+    background: transparent !important;
+  }
+
+  .table tbody td {
+    padding: 16px 20px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #0f172a;
+    vertical-align: middle;
+  }
+
+  .table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  /* hover effect */
+  .table-hover tbody tr {
+    transition: background 0.2s ease;
+  }
+
+  .table-hover tbody tr:hover {
+    background: #f8fafc;
+  }
+
+  /* subtle zebra striping for better readability */
+  .table tbody tr:nth-of-type(even) {
+    background: #fafbfc;
+  }
+
+  .table-hover tbody tr:nth-of-type(even):hover {
+    background: #f1f5f9;
+  }
+
+  /* ----- action buttons (Edit/Delete) premium override ----- */
+  .btn-warning {
+    background: #f59e0b;
+    border: none;
+    color: white;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 50px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 16px rgba(245, 158, 11, 0.20);
+    font-size: 0.85rem;
+  }
+
+  .btn-warning:hover {
+    background: #d97706;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(245, 158, 11, 0.30);
+    color: white;
+  }
+
+  .btn-danger {
+    background: #ef4444;
+    border: none;
+    color: white;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 50px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 16px rgba(239, 68, 68, 0.20);
+    font-size: 0.85rem;
+  }
+
+  .btn-danger:hover {
+    background: #dc2626;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(239, 68, 68, 0.30);
+    color: white;
+  }
+
+  .btn-sm {
+    padding: 6px 14px;
+    font-size: 0.8rem;
+  }
+
+  /* ----- responsive adjustments ----- */
+  @media (max-width: 768px) {
+    .page-title {
+      font-size: 1.6rem;
+    }
+
+    .event-card {
+      padding: 20px 16px;
+      border-radius: 18px;
+    }
+
+    .d-flex {
+      flex-direction: column;
+      align-items: stretch !important;
+      gap: 12px;
+    }
+
+    .btn-add {
+      width: 100%;
+      text-align: center;
+    }
+
+    .table {
+      font-size: 0.85rem;
+      border-radius: 16px;
+    }
+
+    .table thead th,
+    .table tbody td {
+      padding: 12px 14px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .table thead th {
+      font-size: 0.7rem;
+      padding: 8px 10px;
+      white-space: normal;
+    }
+
+    .table tbody td {
+      padding: 8px 10px;
+      font-size: 0.8rem;
+    }
+
+    /* make table horizontally scrollable */
+    .table {
+      display: block;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .table thead,
+    .table tbody,
+    .table tr {
+      display: table;
+      width: 100%;
+      table-layout: fixed;
+    }
+
+    .btn-warning,
+    .btn-danger {
+      padding: 4px 10px;
+      font-size: 0.7rem;
+    }
+  }
+
+  /* ensure base container doesn't interfere */
+  .table * {
+    box-sizing: border-box;
+  }
+</style>
+
+<h2 class="page-title">
+  Event Management
+</h2>
+
+<div class="event-card">
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+
+    <h4>College Events</h4>
+
+    <button class="btn-add">
+      Add Event
+    </button>
+
+  </div>
+
+  <table class="table table-bordered table-hover">
+
+    <thead class="table-primary">
+
+      <tr>
+
+        <th>Event ID</th>
+        <th>Event Name</th>
+        <th>Date</th>
+        <th>Venue</th>
+        <th>Action</th>
+
+      </tr>
+
+    </thead>
+
+    <tbody>
+
+      {% for row in data %}
+
+      <tr>
+
+        <td>{{ row.EventID }}</td>
+
+        <td>{{ row["Event Name"] }}</td>
+
+        <td>{{ row.Date }}</td>
+
+        <td>{{ row.Venue }}</td>
+
+        <td>
+
+          <button class="btn btn-warning btn-sm">
+            Edit
+          </button>
+
+          <button class="btn btn-danger btn-sm">
+            Delete
+          </button>
+
+        </td>
+
+      </tr>
+
+      {% endfor %}
+
+    </tbody>
+
+  </table>
+
+</div>
+
+{% endblock %}
